@@ -4,6 +4,8 @@ require("dotenv").config();
 const eventRoutes = require("./routes/eventRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const cloudinaryRoutes = require("./routes/cloudinaryRoutes");
+const showRoutes = require("./routes/showRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
 const cors = require("cors");
 const app = express();
 
@@ -16,12 +18,15 @@ mongoose
     console.log(err);
   });
 
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
 app.use("/api/event", eventRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/upload", cloudinaryRoutes);
+app.use("/api/show", showRoutes);
+app.use("/api/booking", bookingRoutes);
 
 app.listen(process.env.PORT, (req, res) => {
   console.log(`Server is running on port ${process.env.PORT}`);

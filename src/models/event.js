@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const eventSchema = new mongoose.Schema({
-  
   name: {
     type: String,
     required: true,
@@ -14,7 +13,8 @@ const eventSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-    default:'https://res.cloudinary.com/dehpzebdo/image/upload/v1737542740/20210915-145842-OVATION-03030-min-min_xakbwe.jpg'
+    default:
+      "https://res.cloudinary.com/dehpzebdo/image/upload/v1737542740/20210915-145842-OVATION-03030-min-min_xakbwe.jpg",
   },
   location: {
     type: String,
@@ -37,9 +37,20 @@ const eventSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  shows: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Show", // Reference to the Show schema for multiple shows in an event
+    },
+  ],
+  bookings: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Booking", // Reference to the Booking schema for scalability
+    },
+  ],
 });
 
-// Create the model
 const Event = mongoose.model("Event", eventSchema);
 
 module.exports = Event;

@@ -45,7 +45,12 @@ exports.getAllEvents = async (req, res) => {
 exports.getEventById = async (req, res) => {
   try {
     const { id } = req.params;
-    const event = await Event.findById({ _id: id }).populate('shows').populate('bookings');
+    const event = await Event.findById({ _id: id }).populate('bookings').populate({
+      path: "shows",
+      populate: {
+        path: "eventId", // This assumes `eventId` is referenced in Show model
+      }
+    });
 
     if (!event) {
       return res.status(404).json({ message: "Event not found" });

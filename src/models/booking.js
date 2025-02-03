@@ -30,6 +30,10 @@ const bookingSchema = new mongoose.Schema({
     required: true,
     default:'https://avatar.iran.liara.run/public'
   },
+  totalAmount:{
+    type: Number,
+    required: true,
+  }
 });
 
 const Booking = mongoose.model("Booking", bookingSchema);

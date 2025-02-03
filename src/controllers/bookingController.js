@@ -131,7 +131,7 @@ exports.createBooking = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: "Booking successful", booking: savedBooking });
+      .json({ message: "Ticket Booked", booking: savedBooking.populate('showId') });
   } catch (error) {
     res
       .status(500)

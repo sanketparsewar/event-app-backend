@@ -70,9 +70,9 @@ exports.createBooking = async (req, res) => {
     show.availableSeats -= tickets;
     await show.save();
 
-    const event = await Event.findById(show.eventId);
-    event.bookings.push(savedBooking._id);
-    await event.save();
+    // const event = await Event.findById(show.eventId);
+    // event.bookings.push(savedBooking._id);
+    // await event.save();
 
     // Populate the showId field before sending response
     const populatedBooking = await Booking.findById(savedBooking._id).populate({

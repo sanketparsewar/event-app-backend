@@ -25,9 +25,9 @@ exports.createShow = async (req, res) => {
     const savedShow = await newShow.save();
 
     // Push the new show's ID into the event's 'shows' array
-    event.shows = event.shows || []; // Ensure 'shows' is initialized as an array
-    event.shows.push(savedShow._id);
-    await event.save();
+    // event.shows = event.shows || []; // Ensure 'shows' is initialized as an array
+    // event.shows.push(savedShow._id);
+    // await event.save();
 
     res
       .status(201)
@@ -42,7 +42,7 @@ exports.createShow = async (req, res) => {
 // Get all shows
 exports.getAllShows = async (req, res) => {
   try {
-    const shows = await Show.find().populate("eventId");
+    const shows = await Show.find();
     res.status(200).json(shows);
   } catch (error) {
     res
@@ -51,21 +51,26 @@ exports.getAllShows = async (req, res) => {
   }
 };
 
-// Get shows by Event ID
+// Get all shows by Event ID
 exports.getShowsByEvent = async (req, res) => {
   try {
     const { eventId } = req.params;
 
-    const shows = await Show.find({ eventId }).populate("eventId");
-    if (!shows || shows.length === 0) {
-      return res.status(404).json({ error: "No shows found for this event" });
+    // Fetch all matching shows
+    const shows = await Show.find({ eventId:eventId }).select('-eventId -__v');
+
+    if (!shows.length) {
+      return res
+        .status(404)
+        .json({ message: "No shows found for this event." });
     }
 
-    res.status(200).json(shows);
+    return res.status(200).json(shows); // Returning list directly
   } catch (error) {
-    res
+    console.error("Error fetching shows:", error);
+    return res
       .status(500)
-      .json({ error: "Failed to fetch shows", details: error.message });
+      .json({ message: "Failed to fetch shows", error: error.message });
   }
 };
 

@@ -23,12 +23,6 @@ exports.createShow = async (req, res) => {
     });
 
     const savedShow = await newShow.save();
-
-    // Push the new show's ID into the event's 'shows' array
-    // event.shows = event.shows || []; // Ensure 'shows' is initialized as an array
-    // event.shows.push(savedShow._id);
-    // await event.save();
-
     res
       .status(201)
       .json({ message: "Show created successfully", show: savedShow });
@@ -57,7 +51,7 @@ exports.getShowsByEvent = async (req, res) => {
     const { eventId } = req.params;
 
     // Fetch all matching shows
-    const shows = await Show.find({ eventId:eventId }).select('-eventId -__v');
+    const shows = await Show.find({ eventId:eventId }).select('-__v').populate('eventId');
 
     if (!shows.length) {
       return res

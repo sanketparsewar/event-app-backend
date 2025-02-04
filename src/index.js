@@ -1,13 +1,21 @@
 const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
-const eventRoutes = require("./routes/eventRoutes");
-const categoryRoutes = require("./routes/categoryRoutes");
-const cloudinaryRoutes = require("./routes/cloudinaryRoutes");
-const showRoutes = require("./routes/showRoutes");
-const bookingRoutes = require("./routes/bookingRoutes");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
+
+const authRouter = require("./routes/authRouter");
+const eventRouter = require("./routes/eventRouter");
+const categoryRouter = require("./routes/categoryRouter");
+const cloudinaryRouter = require("./routes/cloudinaryRouter");
+const showRouter = require("./routes/showRouter");
+const bookingRouter = require("./routes/bookingRouter");
 const app = express();
+
+const corsOptions = {
+  origin: "http://localhost:8100", // Replace with the actual origin of your frontend
+  credentials: true, // Allow credentials (cookies, authorization headers)
+};
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -20,13 +28,17 @@ mongoose
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
 
-app.use("/api/event", eventRoutes);
-app.use("/api/category", categoryRoutes);
-app.use("/api/upload", cloudinaryRoutes);
-app.use("/api/show", showRoutes);
-app.use("/api/booking", bookingRoutes);
+// Apply CORS middleware with configuration
+app.use(cors(corsOptions));
+
+app.use("/api/auth", authRouter);
+app.use("/api/event", eventRouter);
+app.use("/api/category", categoryRouter);
+app.use("/api/upload", cloudinaryRouter);
+app.use("/api/show", showRouter);
+app.use("/api/booking", bookingRouter);
 
 app.listen(process.env.PORT, (req, res) => {
   console.log(`Server is running on port ${process.env.PORT}`);

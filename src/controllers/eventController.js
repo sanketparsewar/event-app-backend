@@ -4,10 +4,10 @@ const Event = require("../models/event");
 // Create Event
 exports.createEvent = async (req, res) => {
   try {
-    const { name, date, image, location, headliners, performers, categoryId, description } = req.body;
+    const { name, image, location, headliners, performers, categoryId, description } = req.body;
 
     // Validations
-    if (!name || !date || !image || !location || !categoryId || !description) {
+    if (!name || !image || !location || !categoryId || !description) {
       return res.status(400).json({ message: "All required fields must be provided." });
     }
 
@@ -15,7 +15,7 @@ exports.createEvent = async (req, res) => {
     const event = new Event({
     
       name,
-      date,
+      // date,
       image,
       location,
       headliners,

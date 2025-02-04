@@ -6,10 +6,7 @@ const eventSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  date: {
-    type: Date,
-    required: true,
-  },
+  
   image: {
     type: String,
     required: true,
@@ -37,18 +34,7 @@ const eventSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  // shows: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "Show", // Reference to the Show schema for multiple shows in an event
-  //   },
-  // ],
-  // bookings: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: "Booking", // Reference to the Booking schema for scalability
-  //   },
-  // ],
+  
 });
 
 const Event = mongoose.model("Event", eventSchema);

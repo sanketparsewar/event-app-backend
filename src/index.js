@@ -14,6 +14,7 @@ const app = express();
 
 const corsOptions = {
   origin: "http://localhost:8100", // Replace with the actual origin of your frontend
+  credentials: true, // Allow credentials (cookies, authorization headers)
 };
 
 mongoose

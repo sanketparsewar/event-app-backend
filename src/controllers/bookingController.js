@@ -1,6 +1,7 @@
 const Booking = require("../models/booking");
 const Event = require("../models/event");
 const Show = require("../models/show");
+const User = require("../models/user");
 
 const validator = require("validator"); // Add this if you're using the 'validator' library for email validation
 
@@ -70,10 +71,6 @@ exports.createBooking = async (req, res) => {
     show.availableSeats -= tickets;
     await show.save();
 
-    // const event = await Event.findById(show.eventId);
-    // event.bookings.push(savedBooking._id);
-    // await event.save();
-
     // Populate the showId field before sending response
     const populatedBooking = await Booking.findById(savedBooking._id).populate({
       path: "showId",
@@ -109,7 +106,7 @@ exports.getBookingById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const booking = await Booking.findById( id ).populate({
+    const booking = await Booking.findById(id).populate({
       path: "showId",
       populate: {
         path: "eventId", // This assumes `eventId` is referenced in Show model
@@ -124,6 +121,33 @@ exports.getBookingById = async (req, res) => {
     res
       .status(500)
       .json({ error: "Failed to fetch booking", details: error.message });
+  }
+};
+
+exports.getUserBookings = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findById(userId);
+
+    // Assuming `createdAt` or `bookingDate` field in the Booking model stores the booking date and time
+    const bookings = await Booking.find({ email: user.email })
+      .sort({ createdAt: -1 })
+      .populate({
+        path: "showId",
+        populate: {
+          path: "eventId", // This assumes `eventId` is referenced in Show model
+        },
+      }); // Sort by createdAt in descending order (latest booking first)
+
+    if (!bookings || bookings.length === 0) {
+      return res.status(404).json({ error: "No bookings found for this user" });
+    }
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Failed to fetch bookings", details: error.message });
   }
 };
 

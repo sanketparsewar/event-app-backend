@@ -13,7 +13,7 @@ const bookingRouter = require("./routes/bookingRouter");
 const app = express();
 
 const corsOptions = {
-  origin: "*", // Replace with the actual origin of your frontend
+  origin: ["http://localhost:8100", "https://n5f6rmt4-8100.inc1.devtunnels.ms"], // Replace with the actual origin of your frontend
   credentials: true, // Allow credentials (cookies, authorization headers)
 };
 

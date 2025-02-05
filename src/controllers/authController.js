@@ -66,7 +66,10 @@ exports.logoutUser = (req, res) => {
   res
     .cookie("token", "", {
       httpOnly: true,
-      expires: new Date(0),
+      secure: true, // Set to true if using HTTPS
+      expires: new Date(0),  // Expire the cookie immediately
+      path: "/",  // Ensure it applies to the whole domain
+      sameSite: "None",  // Allow cross-origin cookies
     })
     .json({ message: "Logged out successfully" });
 };

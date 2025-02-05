@@ -42,22 +42,26 @@ exports.loginUser = async (req, res) => {
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     const isMatch = await user.matchPassword(password);
-    if (isMatch) {
-      const token = generateToken(user);
-
-      res.cookie("token", token, {
-        httpOnly: false,  // If you need to access it via `document.cookie`
-        sameSite: "None", // Required for cross-origin cookies
-        secure: true,     // Must be true for HTTPS
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
-      })
-        .json({ message: "Login successful" });
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" }); // ⬅️ Now it properly exits
     }
-    return res.status(400).json({ message: "Invalid credentials" });
+
+    // ✅ Only generate token if password is correct
+    const token = generateToken(user);
+
+    res.cookie("token", token, {
+      httpOnly: false,  // If you need to access it via `document.cookie`
+      sameSite: "None", // Required for cross-origin cookies
+      secure: true,     // Must be true for HTTPS
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    })
+    .json({ message: "Login successful" });
+
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 exports.logoutUser = (req, res) => {
   res

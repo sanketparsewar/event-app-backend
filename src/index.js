@@ -12,10 +12,10 @@ const showRouter = require("./routes/showRouter");
 const bookingRouter = require("./routes/bookingRouter");
 const app = express();
 
-// const corsOptions = {
-//   origin: "http://localhost:8100", // Replace with the actual origin of your frontend
-//   credentials: true, // Allow credentials (cookies, authorization headers)
-// };
+const corsOptions = {
+  origin: "*", // Replace with the actual origin of your frontend
+  credentials: true, // Allow credentials (cookies, authorization headers)
+};
 
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -31,7 +31,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Apply CORS middleware with configuration
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use("/api/auth", authRouter);
 app.use("/api/event", eventRouter);

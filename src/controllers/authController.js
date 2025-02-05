@@ -50,12 +50,11 @@ exports.loginUser = async (req, res) => {
     const token = generateToken(user);
 
     res.cookie("token", token, {
-      httpOnly: true,  // If you need to access it via `document.cookie`
+      httpOnly: true,
       sameSite: "None", // Required for cross-origin cookies
-      secure: true,     // Must be true for HTTPS
+      secure: true,     // Ensure the cookie is only sent over HTTPS
       maxAge: 24 * 60 * 60 * 1000, // 1 day
-    })
-    .json({ message: "Login successful" });
+    }).json({ message: "Login successful" });
 
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });

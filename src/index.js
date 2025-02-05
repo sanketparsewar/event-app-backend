@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Apply CORS middleware with configuration
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use("/api/auth", authRouter);
 app.use("/api/event", eventRouter);

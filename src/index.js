@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 const authRouter = require("./routes/authRouter");
+const userRouter = require("./routes/userRouter");
 const eventRouter = require("./routes/eventRouter");
 const categoryRouter = require("./routes/categoryRouter");
 const cloudinaryRouter = require("./routes/cloudinaryRouter");
@@ -39,6 +40,7 @@ app.use("/api/category", categoryRouter);
 app.use("/api/upload", cloudinaryRouter);
 app.use("/api/show", showRouter);
 app.use("/api/booking", bookingRouter);
+app.use("/api/user", userRouter);
 
 app.listen(process.env.PORT, (req, res) => {
   console.log(`Server is running on port ${process.env.PORT}`);

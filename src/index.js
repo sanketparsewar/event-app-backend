@@ -14,7 +14,6 @@ const app = express();
 
 const corsOptions = {
   origin: "http://localhost:8100", // Replace with the actual origin of your frontend
-  credentials: true, // Allow credentials (cookies, authorization headers)
 };
 
 mongoose
@@ -31,7 +30,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Apply CORS middleware with configuration
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use("/api/auth", authRouter);
 app.use("/api/event", eventRouter);

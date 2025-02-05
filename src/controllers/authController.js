@@ -45,13 +45,12 @@ exports.loginUser = async (req, res) => {
     if (isMatch) {
       const token = generateToken(user);
 
-      res
-        .cookie("token", token, {
-          httpOnly: false,
-          sameSite: "none",
-          secure: true, // Required for SameSite=None
-          maxAge: 24 * 60 * 60 * 1000, // 1 day
-        })
+      res.cookie("token", token, {
+        httpOnly: false,  // If you need to access it via `document.cookie`
+        sameSite: "None", // Required for cross-origin cookies
+        secure: true,     // Must be true for HTTPS
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
+      })
         .json({ message: "Login successful" });
     }
     return res.status(400).json({ message: "Invalid credentials" });

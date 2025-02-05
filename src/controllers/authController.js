@@ -42,20 +42,19 @@ exports.loginUser = async (req, res) => {
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     const isMatch = await user.matchPassword(password);
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
+    if (isMatch) {
+      const token = generateToken(user);
+
+      res
+        .cookie("token", token, {
+          httpOnly: false,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
+          maxAge: 24 * 60 * 60 * 1000, // 1 day
+        })
+        .json({ message: "Login successful" });
     }
-
-    const token = generateToken(user);
-
-    res
-      .cookie("token", token, {
-        httpOnly: false,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
-      })
-      .json({ message: "Login successful" });
+    return res.status(400).json({ message: "Invalid credentials" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }

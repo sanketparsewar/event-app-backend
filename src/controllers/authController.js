@@ -50,7 +50,7 @@ exports.loginUser = async (req, res) => {
     const token = generateToken(user);
 
     res.cookie("token", token, {
-      httpOnly: false,  // If you need to access it via `document.cookie`
+      httpOnly: true,  // If you need to access it via `document.cookie`
       sameSite: "None", // Required for cross-origin cookies
       secure: true,     // Must be true for HTTPS
       maxAge: 24 * 60 * 60 * 1000, // 1 day

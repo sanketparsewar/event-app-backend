@@ -14,8 +14,14 @@ const eventSchema = new mongoose.Schema({
       "https://res.cloudinary.com/dehpzebdo/image/upload/v1737542740/20210915-145842-OVATION-03030-min-min_xakbwe.jpg",
   },
   location: {
-    type: String,
-    required: true,
+    venue: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
   },
   headliners: {
     type: [String],
@@ -34,7 +40,10 @@ const eventSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const Event = mongoose.model("Event", eventSchema);

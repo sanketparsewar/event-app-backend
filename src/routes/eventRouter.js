@@ -6,6 +6,7 @@ const router = express.Router();
 // Event routes
 router.post("/", eventController.createEvent);
 router.get("/", eventController.getAllEvents);
+router.get("/category/:categoryId", eventController.getEventsByCategory);
 router.get("/:id", eventController.getEventById);
 router.put("/:id", eventController.updateEvent);
 router.delete("/:id", eventController.deleteEvent);

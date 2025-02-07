@@ -11,6 +11,7 @@ const categoryRouter = require("./routes/categoryRouter");
 const cloudinaryRouter = require("./routes/cloudinaryRouter");
 const showRouter = require("./routes/showRouter");
 const bookingRouter = require("./routes/bookingRouter");
+const transactionRouter = require("./routes/transactionRouter");
 const app = express();
 
 const corsOptions = {
@@ -40,6 +41,7 @@ app.use("/api/category", categoryRouter);
 app.use("/api/upload", cloudinaryRouter);
 app.use("/api/show", showRouter);
 app.use("/api/booking", bookingRouter);
+app.use("/api/transaction", transactionRouter);
 app.use("/api/user", userRouter);
 
 app.listen(process.env.PORT, (req, res) => {

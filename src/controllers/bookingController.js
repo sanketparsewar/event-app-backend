@@ -13,23 +13,23 @@ exports.createBooking = async (req, res) => {
     if (!name || name.length < 3) {
       return res
         .status(400)
-        .json({ error: "Name must be at least 3 characters long" });
+        .json({ message: "Name must be at least 3 characters long" });
     }
 
     if (!validator.isEmail(email)) {
-      return res.status(400).json({ error: "Invalid email address" });
+      return res.status(400).json({ message: "Invalid email address" });
     }
 
     if (!/^\d{10}$/.test(phone)) {
       return res
         .status(400)
-        .json({ error: "Phone number must be a valid 10-digit number" });
+        .json({ message: "Phone number must be a valid 10-digit number" });
     }
 
     if (tickets > 6 || tickets <= 0) {
       return res
         .status(400)
-        .json({ error: "Tickets must be a valid number between 1 and 6" });
+        .json({ message: "Tickets must be a valid number between 1 and 6" });
     }
 
     // List of avatar URLs
@@ -48,11 +48,11 @@ exports.createBooking = async (req, res) => {
 
     const show = await Show.findById(showId).populate("eventId");
     if (!show) {
-      return res.status(404).json({ error: "Show not found" });
+      return res.status(404).json({ message: "Show not found" });
     }
 
     if (show.availableSeats < tickets) {
-      return res.status(400).json({ error: "Not enough seats available" });
+      return res.status(400).json({ message: "Not enough seats available" });
     }
 
     const newBooking = new Booking({
@@ -85,7 +85,7 @@ exports.createBooking = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to create booking", details: error.message });
+      .json({ message: "Failed to create booking", details: error.message });
   }
 };
 
@@ -97,7 +97,7 @@ exports.getAllBookings = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to fetch bookings", details: error.message });
+      .json({ message: "Failed to fetch bookings", details: error.message });
   }
 };
 
@@ -113,14 +113,14 @@ exports.getBookingById = async (req, res) => {
       },
     });
     if (!booking) {
-      return res.status(404).json({ error: "No booking found for this id" });
+      return res.status(404).json({message: "No booking found for this id" });
     }
 
     res.status(200).json(booking);
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to fetch booking", details: error.message });
+      .json({message: "Failed to fetch booking", details: error.message });
   }
 };
 
@@ -139,15 +139,15 @@ exports.getUserBookings = async (req, res) => {
         },
       }); // Sort by createdAt in descending order (latest booking first)
 
-    if (!bookings || bookings.length === 0) {
-      return res.status(404).json({ error: "No bookings found for this user" });
-    }
+    // if (!bookings || bookings.length === 0) {
+    //   return res.status(404).json({message: "No bookings found for this user" });
+    // }
 
     res.status(200).json(bookings);
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to fetch bookings", details: error.message });
+      .json({ message: "Failed to fetch bookings", details: error.message });
   }
 };
 
@@ -157,13 +157,13 @@ exports.getBookingsByShow = async (req, res) => {
 
     const bookings = await Booking.find({ showId });
     if (!bookings || bookings.length === 0) {
-      return res.status(404).json({ error: "No bookings found for this show" });
+      return res.status(404).json({ message: "No bookings found for this show" });
     }
 
     res.status(200).json(bookings);
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to fetch bookings", details: error.message });
+      .json({ message: "Failed to fetch bookings", details: error.message });
   }
 };

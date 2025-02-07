@@ -29,7 +29,7 @@ exports.createShow = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to create show", details: error.message });
+      .json({ message: "Failed to create show", details: error.message });
   }
 };
 
@@ -41,7 +41,7 @@ exports.getAllShows = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to fetch shows", details: error.message });
+      .json({ message: "Failed to fetch shows", details: error.message });
   }
 };
 
@@ -82,7 +82,7 @@ exports.getShowById = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to fetch show", details: error.message });
+      .json({ message: "Failed to fetch show", details: error.message });
   }
 };
 
@@ -94,11 +94,11 @@ exports.updateAvailableSeats = async (req, res) => {
 
     const show = await Show.findById(id);
     if (!show) {
-      return res.status(404).json({ error: "Show not found" });
+      return res.status(404).json({ message: "Show not found" });
     }
 
     if (show.availableSeats < seatsBooked) {
-      return res.status(400).json({ error: "Not enough seats available" });
+      return res.status(400).json({ message: "Not enough seats available" });
     }
 
     show.availableSeats -= seatsBooked;
@@ -110,6 +110,6 @@ exports.updateAvailableSeats = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Failed to update seats", details: error.message });
+      .json({ message: "Failed to update seats", details: error.message });
   }
 };

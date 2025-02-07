@@ -56,19 +56,26 @@ exports.getAllEvents = async (req, res) => {
 exports.getEventById = async (req, res) => {
   try {
     const { id } = req.params;
-    const event = await Event.findById({ _id: id });
+
+    // Find the event by ID
+    const event = await Event.findById(id);
 
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
 
+    // If event exists but is inactive, return an error response
+    if (!event.isActive) {
+      return res.status(400).json({ message: "Event Finished" }); // Bad request
+    }
+
     res.status(200).json(event);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Failed to retrieve event", error: error.message });
+    console.error("Error retrieving event:", error);
+    res.status(500).json({ message: "Failed to retrieve event", error: error.message });
   }
 };
+
 
 exports.getEventsByCategory = async (req, res) => {
   try {
@@ -106,7 +113,7 @@ exports.getFilteredEvents = async (req, res) => {
   try {
     const { city, categoryId } = req.query; // Extract query parameters
 
-    let queryFilter = {}; // MongoDB filter object
+    let queryFilter = { isActive: true }; // Ensure only active events are fetched
 
     if (city) {
       queryFilter["location.city"] = city;
@@ -123,6 +130,7 @@ exports.getFilteredEvents = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 
 

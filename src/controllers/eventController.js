@@ -23,7 +23,6 @@ exports.createEvent = async (req, res) => {
 
     const event = new Event({
       name,
-      // date,
       image,
       location,
       headliners,
@@ -90,6 +89,43 @@ exports.getEventsByCategory = async (req, res) => {
   }
 };
 
+exports.getEventsByCity = async (req, res) => {
+  try {
+    const { city } = req.params;
+    const events = await Event.find({ "location.city": city });
+
+
+    res.status(200).json({ success: true, events });
+  } catch (error) {
+    console.error("Error fetching events by city:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.getFilteredEvents = async (req, res) => {
+  try {
+    const { city, categoryId } = req.query; // Extract query parameters
+
+    let queryFilter = {}; // MongoDB filter object
+
+    if (city) {
+      queryFilter["location.city"] = city;
+    }
+    if (categoryId && categoryId !== "null" && categoryId !== "") {
+      queryFilter["categoryId"] = categoryId;
+    }
+
+    const events = await Event.find(queryFilter);
+
+    res.status(200).json({ success: true, events });
+  } catch (error) {
+    console.error("Error fetching filtered events:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+
 // Update Event
 
 exports.updateEvent = async (req, res) => {
@@ -100,7 +136,7 @@ exports.updateEvent = async (req, res) => {
 
     const updatedEvent = await Event.findByIdAndUpdate(id, updates, {
       new: true,
-    }); 
+    });
 
     if (!updatedEvent) {
       return res.status(404).json({ message: "Event not found" });
@@ -108,10 +144,11 @@ exports.updateEvent = async (req, res) => {
 
     res.status(200).json(updatedEvent);
   } catch (error) {
-    res.status(500).json({ message: "Failed to update event", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to update event", error: error.message });
   }
 };
-
 
 // Delete Event
 exports.deleteEvent = async (req, res) => {

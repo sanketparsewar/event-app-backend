@@ -15,8 +15,8 @@ const transactionRouter = require("./routes/transactionRouter");
 const app = express();
 
 const corsOptions = {
-  origin: ["http://localhost:8100", "https://n5f6rmt4-8100.inc1.devtunnels.ms"], // Replace with the actual origin of your frontend
-  credentials: true, // Allow credentials (cookies, authorization headers)
+  origin: ["http://localhost:8100", "https://n5f6rmt4-8100.inc1.devtunnels.ms", "capacitor://localhost", "http://localhost"], 
+  credentials: true,
 };
 
 mongoose

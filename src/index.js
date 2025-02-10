@@ -15,7 +15,7 @@ const transactionRouter = require("./routes/transactionRouter");
 const app = express();
 
 const corsOptions = {
-  origin: ["http://localhost:8100", "https://n5f6rmt4-8100.inc1.devtunnels.ms", "capacitor://localhost", "http://localhost"], 
+  origin: ["http://localhost:8100", "https://event-app-backend-ntri.onrender.com", "capacitor://localhost", "http://localhost"],
   credentials: true,
 };
 
